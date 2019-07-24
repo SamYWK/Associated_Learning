@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os
 
-class_num = 100
+class_num = 10
 
 def autoencoders(y_placeholder, neuron_num, num_of_ae, inv_learning_rate, y_function):
     ###########

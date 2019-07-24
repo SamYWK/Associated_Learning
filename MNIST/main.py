@@ -145,16 +145,17 @@ def main():
 
                 lr = lr_scheduling(gs, lr)
 
-                if gs % (3750.0) == 0.0:
+                if gs % ((len(X_train)/train_batch_size) * 2) == 0.0:
                     train_accu.append(accu)
                     accu = 0
-                    for i in range(int(10000/test_batch_size)):
+                    test_steps = int(len(X_test)/test_batch_size)
+                    for i in range(test_steps):
                         accu += sess.run(accuracy, feed_dict = {handle: testing_handle})
-                    test_accu.append(accu/int(10000/test_batch_size))
+                    test_accu.append(accu/test_steps)
                     print("Epoch :", step)
                     print("Learning rate :", lr)
                     print("Training accu :", train_accu[-1], "Testing accu :", test_accu[-1])
-                    step += 1
+                    step += 2
         except:
             print('End of sequence :)')
 
