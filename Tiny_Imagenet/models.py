@@ -219,7 +219,7 @@ def ResNet_AL(num_blocks, regulariztion_scale, neuron_num, X_placeholder, y_plac
 
 def MLP(X_placeholder, y_placeholder, learning_rate, inv_learning_rate, is_training):
     f_function = tf.nn.relu
-    neuron_num = 1
+    neuron_num = 3000
 
     net = tf.layers.Flatten()(X_placeholder)
 

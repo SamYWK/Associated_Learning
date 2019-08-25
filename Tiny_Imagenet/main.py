@@ -3,7 +3,7 @@ import numpy as np
 from models import *
 from argparse import ArgumentParser
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 print('Tensorflow version: {}'.format(tf.__version__))
 
 #parse args
@@ -23,6 +23,7 @@ model = models[args.model]
 train_batch_size = 100
 test_batch_size = 20
 epochs = 200
+steps_per_epoch = int(100000/train_batch_size)
 model_info = "##########\nModel: " + args.model + "\nTraining batch size: " + str(train_batch_size) + \
             "\nTesting batch size: "+ str(test_batch_size) + "\nEpochs: " + str(epochs)
 
@@ -95,12 +96,12 @@ def prediction(inference, y_placeholder):
     return accuracy
 
 def lr_scheduling(global_step, learning_rate):
-    if ((global_step == 80000) |
-       (global_step == 120000) |
-       (global_step == 160000)):
+    if ((global_step == int(steps_per_epoch * epochs * 0.4)) |
+       (global_step == int(steps_per_epoch * epochs * 0.6)) |
+       (global_step == int(steps_per_epoch * epochs * 0.8))):
         return learning_rate*0.1
 
-    elif global_step == 180000:
+    elif global_step == int(steps_per_epoch * epochs * 0.9):
         return learning_rate*0.5
     else:
         return learning_rate

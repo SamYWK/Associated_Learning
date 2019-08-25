@@ -23,6 +23,7 @@ model = models[args.model]
 train_batch_size = 32
 test_batch_size = 20
 epochs = 200
+steps_per_epoch = int(50000/train_batch_size)
 model_info = "##########\nModel: " + args.model + "\nTraining batch size: " + str(train_batch_size) + \
             "\nTesting batch size: "+ str(test_batch_size) + "\nEpochs: " + str(epochs)
 
@@ -100,12 +101,12 @@ def prediction(inference, y_placeholder):
     return accuracy
 
 def lr_scheduling(global_step, learning_rate):
-    if ((global_step == 125000) |
-       (global_step == 187500) |
-       (global_step == 250000)):
+    if ((global_step == int(steps_per_epoch * epochs * 0.4)) |
+       (global_step == int(steps_per_epoch * epochs * 0.6)) |
+       (global_step == int(steps_per_epoch * epochs * 0.8))):
         return learning_rate*0.1
 
-    elif global_step == 281250:
+    elif global_step == int(steps_per_epoch * epochs * 0.9):
         return learning_rate*0.5
     else:
         return learning_rate
