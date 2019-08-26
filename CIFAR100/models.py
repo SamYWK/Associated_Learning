@@ -69,7 +69,7 @@ def al_loss(inputs, y_list, index, name_scope, train_steps, update_opss, learnin
     train_steps.append(train_step)
     return dense
 
-def conv_layer_bn(inputs, filters, regularizer, is_training, f_function, strides = 1, name_scope = None):
+def conv_layer_bn(inputs, filters, regularizer, is_training, f_function, strides = 1, name_scope = None, is_batchnorm = True):
     output = tf.layers.conv2d(
                 inputs = inputs,
                 filters = filters,
@@ -80,7 +80,8 @@ def conv_layer_bn(inputs, filters, regularizer, is_training, f_function, strides
                 kernel_regularizer = regularizer,
                 kernel_initializer = tf.keras.initializers.he_normal(),
                 name = name_scope)
-    output = tf.layers.batch_normalization(output, training = is_training)
+    if is_batchnorm:
+        output = tf.layers.batch_normalization(output, training = is_training)
     return f_function(output)
 
 def resBlock(inputs, out_channels, strides, regularizer, is_training, f_function):
@@ -541,29 +542,29 @@ def VGG_AL(X_placeholder, y_placeholder, learning_rate, inv_learning_rate, is_tr
 
     #model
     name_scope = 'Layer_0' #32x32
-    net = conv_layer_bn(X_placeholder, 128, regularizer, is_training, f_function, name_scope = name_scope)
+    net = conv_layer_bn(X_placeholder, 128, regularizer, is_training, f_function, name_scope = name_scope, is_batchnorm = False)
 
     name_scope = 'Layer_1'
-    net = conv_layer_bn(net, 256, regularizer, is_training, f_function, name_scope = name_scope)
+    net = conv_layer_bn(net, 256, regularizer, is_training, f_function, name_scope = name_scope, is_batchnorm = False)
     net = tf.layers.max_pooling2d(net, pool_size = 2, strides = 2)
     al_loss(net, target_list, 0, ['Layer_0', 'Layer_1'], train_steps, update_opss, learning_rate, bridge_function, neuron_num, regularizer)
     net = tf.stop_gradient(net)
     
     name_scope = 'Layer_2' #16x16
-    net = conv_layer_bn(net, 256, regularizer, is_training, f_function, name_scope = name_scope)
+    net = conv_layer_bn(net, 256, regularizer, is_training, f_function, name_scope = name_scope, is_batchnorm = False)
 
     name_scope = 'Layer_3'
-    net = conv_layer_bn(net, 512, regularizer, is_training, f_function, name_scope = name_scope)
+    net = conv_layer_bn(net, 512, regularizer, is_training, f_function, name_scope = name_scope, is_batchnorm = False)
     net = tf.layers.max_pooling2d(net, pool_size = 2, strides = 2)
     al_loss(net, target_list, 1, ['Layer_2', 'Layer_3'], train_steps, update_opss, learning_rate, bridge_function, neuron_num, regularizer)
     net = tf.stop_gradient(net)
     
     name_scope = 'Layer_4' #8x8
-    net = conv_layer_bn(net, 512, regularizer, is_training, f_function, name_scope = name_scope)
+    net = conv_layer_bn(net, 512, regularizer, is_training, f_function, name_scope = name_scope, is_batchnorm = False)
     net = tf.layers.max_pooling2d(net, pool_size = 2, strides = 2)
 
     name_scope = 'Layer_5' #4x4
-    net = conv_layer_bn(net, 512, regularizer, is_training, f_function, name_scope = name_scope)
+    net = conv_layer_bn(net, 512, regularizer, is_training, f_function, name_scope = name_scope, is_batchnorm = False)
     net = tf.layers.max_pooling2d(net, pool_size = 2, strides = 2)
     al_loss(net, target_list, 2, ['Layer_4', 'Layer_5'], train_steps, update_opss, learning_rate, bridge_function, neuron_num, regularizer)
     net = tf.stop_gradient(net)
