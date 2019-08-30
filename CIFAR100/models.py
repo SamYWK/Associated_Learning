@@ -571,11 +571,11 @@ def VGG_AL(X_placeholder, y_placeholder, learning_rate, inv_learning_rate, is_tr
 
     name_scope = 'Layer_6' #2x2
     net = tf.reshape(net, [-1, 512*2*2])
-    net = tf.layers.dense(net, 1024, tf.nn.elu, regularizer,
+    net = tf.layers.dense(net, 1024, f_function, regularizer,
             kernel_initializer = tf.keras.initializers.he_normal(), name = name_scope)
 
     name_scope = 'Layer_7'
-    net = tf.layers.dense(net, 1024, tf.nn.elu, regularizer,
+    net = tf.layers.dense(net, 1024, f_function, regularizer,
             kernel_initializer = tf.keras.initializers.he_normal(), name = name_scope)
     dense = al_loss(net, target_list, 3, ['Layer_6', 'Layer_7'], train_steps, update_opss, learning_rate, bridge_function, neuron_num, regularizer)
 
