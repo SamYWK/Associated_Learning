@@ -279,7 +279,7 @@ def MLP_AL(X_placeholder, y_placeholder, learning_rate, inv_learning_rate, is_tr
 def CNN(X_placeholder, y_placeholder, learning_rate, inv_learning_rate, is_training):
     f_function = tf.nn.relu
     hidden_layer_count = 4
-    neuron_num = 256
+    neuron_num = 500
     regulariztion_scale = 0.0
 
     regularizer = tf.contrib.layers.l2_regularizer(scale = regulariztion_scale)
@@ -352,7 +352,7 @@ def CNN_AL(X_placeholder, y_placeholder, learning_rate, inv_learning_rate, is_tr
     bridge_function = tf.nn.sigmoid
     y_function = tf.nn.sigmoid
     hidden_layer_count = 4
-    neuron_num = 256
+    neuron_num = 500
     regulariztion_scale = 0.0
 
     regularizer = tf.contrib.layers.l2_regularizer(scale = regulariztion_scale)
