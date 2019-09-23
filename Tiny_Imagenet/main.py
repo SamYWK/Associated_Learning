@@ -7,15 +7,12 @@ import os
 print('Tensorflow version: {}'.format(tf.__version__))
 
 #parse args
-helper = "Available models: MLP, CNN, ResNet_20, ResNet_32 and VGG. With AL model, add postfix '_AL' after model name."
+helper = "Available models: MLP, CNN. With AL model, add postfix '_AL' after model name."
 parser = ArgumentParser()
 parser.add_argument("-m", "--model", help = helper, 
-                     choices=['MLP', 'MLP_AL', 'CNN', 'CNN_AL', 'ResNet_20', 'ResNet_20_AL', 'ResNet_32',
-                                'ResNet_32_AL', 'VGG', 'VGG_AL'], 
+                     choices=['MLP', 'MLP_AL', 'CNN', 'CNN_AL'], 
                      required=True, dest = "model")
-models = {'MLP': MLP, 'MLP_AL': MLP_AL, 'CNN': CNN, 'CNN_AL': CNN_AL, 'ResNet_20': ResNet_20, 
-            'ResNet_20_AL': ResNet_20_AL, 'ResNet_32': ResNet_32, 'ResNet_32_AL': ResNet_32_AL,
-             'VGG': VGG, 'VGG_AL': VGG_AL}
+models = {'MLP': MLP, 'MLP_AL': MLP_AL, 'CNN': CNN, 'CNN_AL': CNN_AL}
 args = parser.parse_args()
 model = models[args.model]
 
