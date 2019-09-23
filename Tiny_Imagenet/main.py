@@ -167,7 +167,7 @@ def main():
                 if gs % ((100000/train_batch_size) * 2) == 0.0:
                     train_accu.append(accu)
                     accu = 0
-                    test_steps = int(10000/test_batch_size)
+                    test_steps = int(100000/test_batch_size)
                     for i in range(test_steps):
                         accu += sess.run(accuracy, feed_dict = {handle: testing_handle, is_training: False})
                     test_accu.append(accu/test_steps)
